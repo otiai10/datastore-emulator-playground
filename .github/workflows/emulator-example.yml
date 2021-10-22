@@ -9,6 +9,8 @@ jobs:
   datastore-test:
     name: Datastore Example Test
     runs-on: ubuntu-latest
+    env:
+      DATASTORE_EMULATOR_HOST: localhost:8081
     steps:
     - name: Check out code into the Go module directory
       uses: actions/checkout@v2
@@ -22,5 +24,18 @@ jobs:
     - name: Start Datastore Emulator
       run: |
         gcloud beta emulators datastore start \
-        --data-dir=./data
-        # --project=${{ secrets.GCP_PROJECT_ID }}
+        --data-dir=./data &
+    - name: Wait for Datastore Emulator to wake up
+      run: |
+        count=0
+        max_count=60
+        until curl ${DATASTORE_EMULATOR_HOST} -s; do
+            echo "Waiting for Datastore Emulator to wake up..." >&2
+            sleep 1s;
+            ((count++))
+            if [ "${count}" -gt "${max_count}" ]; then
+                echo "Max retries exceeded! (${count})" >&2
+                exit 1
+            fi
+        done
+        echo "Datastore Emulator is up!" >&2
