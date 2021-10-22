@@ -10,6 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       DATASTORE_EMULATOR_HOST: localhost:8081
+      GOOGLE_CLOUD_PROJECT: ${{ secrets.GOOGLE_CLOUD_PROJECT }}
     steps:
     - name: Check out code into the Go module directory
       uses: actions/checkout@v2
@@ -43,6 +44,4 @@ jobs:
       with:
         go-version: 1.17
     - name: Go Test
-      env:
-        GOOGLE_CLOUD_PROJECT: ${{ secrets.GOOGLE_CLOUD_PROJECT }}
       run: go test -v ./...

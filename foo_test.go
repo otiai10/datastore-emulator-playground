@@ -19,4 +19,11 @@ func TestFoo(t *testing.T) {
 	client, err := datastore.NewClient(ctx, os.Getenv("GOOGLE_CLOUD_PROJECT"))
 	Expect(t, client).Not().ToBe(nil)
 	Expect(t, err).ToBe(nil)
+
+	n, err := client.Count(ctx, datastore.NewQuery("users"))
+	Expect(t, err).ToBe(nil)
+	Expect(t, n).ToBe(0)
+
+	err = client.Close()
+	Expect(t, err).ToBe(nil)
 }
