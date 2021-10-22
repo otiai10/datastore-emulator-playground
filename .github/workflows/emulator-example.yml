@@ -18,7 +18,7 @@ jobs:
         project_id: ${{ secrets.GCP_PROJECT_ID }}
     - name: Install Emulator Components
       run: |
-        gcloud components install cloud-datastore-emulator --quiet
+        gcloud components install beta cloud-datastore-emulator --quiet
     - name: Start Datastore Emulator
       run: |
         gcloud beta emulators datastore start \
