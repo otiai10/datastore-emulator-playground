@@ -1,6 +1,5 @@
 name: Datastore Emulator Example
 
-
 on:
   push:
     branches: [ main ]
