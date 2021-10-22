@@ -1,0 +1,23 @@
+name: Datastore Emulator Example
+
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  datastore-test:
+    name: Datastore Example Test
+    runs-on: ubuntu-latest
+    steps:
+    - name: Check out code into the Go module directory
+      uses: actions/checkout@v2
+    - name: Set up Cloud SDK
+      uses: google-github-actions/setup-gcloud@master
+      with:
+        project_id: ${{ secrets.GCP_PROJECT_ID }}
+    - name: Start Datastore Emulator
+      run: |
+        gcloud beta emulators datastore start \
+        --data-dir=./data \
+        --project=${{ secrets.GCP_PROJECT_ID }}
